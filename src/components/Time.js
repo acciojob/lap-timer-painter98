@@ -50,7 +50,7 @@ function Time({initialTime}) {
     }
   return (
     <div>
-      <p>{currTime}</p>
+      <div>{currTime}</div>
       <div>
         <button onClick={handleStart}>Start</button>
         <button onClick={handleStop}>Stop</button>
