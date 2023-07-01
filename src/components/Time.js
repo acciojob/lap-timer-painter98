@@ -9,7 +9,11 @@ function Time({initialTime}) {
         if(isStart){
             let timer = setInterval(()=>{
                 let {second,minute,hour} = HandleTime();
-                setCurrTime(`${Math.abs(hour-initialTime.getHours())}:${Math.abs(minute-initialTime.getMinutes())}:${Math.abs(second-initialTime.getSeconds())}`)
+                setCurrTime(
+                    (hour > 9 ? hour : '0' + hour) + ':' +
+                    (minute > 9 ? minute : '0' + minute) + ':'
+                    + (second > 9 ? second : '0' + second)
+                )
              }
             ,1000)
 
@@ -18,12 +22,12 @@ function Time({initialTime}) {
     },[isStart,currTime])
 
     function HandleTime(){
-        let settime = new Date();
-        let second = settime.getSeconds();
-        let minute = settime.getMinutes();
-        let hour = settime.getHours();
+        const total = Date.parse(new Date())-Date.parse(initialTime);
+        const second = Math.floor((total / 1000) % 60);
+        const minute = Math.floor((total / 1000 / 60) % 60);
+        const hour = Math.floor((total / 1000 / 60 / 60) % 24);
 
-        return {second,minute,hour};
+        return {total,second,minute,hour};
     }
 
 
@@ -48,10 +52,10 @@ function Time({initialTime}) {
     <div>
       <p>{currTime}</p>
       <div>
-        <button onClick={handleStart}>start</button>
-        <button onClick={handleStop}>stop</button>
-        <button onClick={handleLap}>lap</button>
-        <button onClick={handleReset}>reset</button>
+        <button onClick={handleStart}>Start</button>
+        <button onClick={handleStop}>Stop</button>
+        <button onClick={handleLap}>Lap</button>
+        <button onClick={handleReset}>Reset</button>
         <ul>
         {lap.map((list,idx)=>{
             return (
